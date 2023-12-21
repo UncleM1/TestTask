@@ -22,6 +22,15 @@ for i in sheet ['C1' :f'C{max_row}']:
 
 #Вопрос 1
 def sum_cash(up_border:str,down_border:str):
+    """
+    Функция выделяет область по заданным параметрам (от up_border до down_border).
+    Проверяет столбец status оплаты и, в случае вхождения "ОПЛАЧЕНО",
+    ссумирует значения столбца sum
+
+    :param up_border: str
+    :param down_border: str
+    """
+
 
     Jule_sum = 0
 
@@ -36,7 +45,15 @@ def sum_cash(up_border:str,down_border:str):
 
 #Вопрос 2
 
-def all_cash(start_cell:str):
+def all_cash(start_cell):
+
+    """
+    Функция принимает на вход начальную ячеку поиска и проходит
+    от заданной ячейки до конца столбца , сумммируя значения ,
+    когда встречает окончание месяца.
+
+    :param start_cell: str like B3
+    """
 
     months = [i for i in month_cords.keys()]
 
@@ -66,7 +83,20 @@ def all_cash(start_cell:str):
 
 
 #Вопрос 3
-def best_stuff(up_border:str,down_border:str):
+def best_stuff(up_border,down_border):
+    """
+    Функция выделяет область по заданным параметрам (от up_border до down_border).
+    Создает словарь names, ключем в которм яляются фамилии менеджеров, а значениями
+    привлеченные имим стредста. Cловарь final_name , выбирает наибольшее значение из names и
+    соответсвующую фамилию.
+
+    :param up_border: str
+    :param down_border: str or max_row
+    """
+
+
+
+
     names = {}
 
     for name in sheet[f'B{month_cords[up_border]}' : f'D{month_cords[down_border]}']:
@@ -82,22 +112,40 @@ def best_stuff(up_border:str,down_border:str):
     print("Вопрос 3 ",final_name)
 
 #Вопрос 4
-def most_type(up_border : str,down_border : str or max_row):
-    status_dict = {}
+def most_type(up_border ,down_border ):
+    """
+    Функция выделяет область по заданным параметрам (от up_border до down_border)
+    и записывает в словарь n_c_dict.
+    Выбирает наичастое вхождение и записывает в словарь final_n_c
+
+    :param up_border: str
+    :param down_border: str or max_row
+    """
+
+    n_c_dict = {}
     
-    for status in sheet[f'E{month_cords[up_border]}' : f'E{down_border}']:
-        if status[0].value in status_dict:
-            status_dict[status[0].value]+=1
+    for n_c in sheet[f'E{month_cords[up_border]}' : f'E{down_border}']:
+        if n_c[0].value in n_c_dict:
+            n_c_dict[n_c[0].value]+=1
         else:
-            status_dict[status[0].value] = 1
+            n_c_dict[n_c[0].value] = 1
 
-    max_status = max(status_dict.values())
-    final_status = {k:v for k,v in status_dict.items() if v == max_status}
+    max_status = max(n_c_dict.values())
+    final_n_c = {k:v for k,v in n_c_dict.items() if v == max_status}
 
-    print("Вопрос 4 ",final_status)
+    print("Вопрос 4 ",final_n_c)
 
 #Вопрос 5
 def OrgiginalsAtMonth(up_border:str,down_border:str,month_search:int):
+    """
+    Функция выделяет область по заданным параметрам (от up_border до down_border).
+    Сравнивает месяц объекта datetime с месяцои поиска и выводит количество вхождений
+
+    :param up_border: str
+    :param down_border: str
+    :param month_search: int
+    """
+
     originals_at_month = 0
     
     for date in sheet[f'H{month_cords[up_border]}' : f'H{month_cords[down_border]}']:
