@@ -12,8 +12,9 @@ max_row = sheet.max_row
 
 #Запишем в словарь координаты ячеейк с началом месяца
 month_cords = {}
+year = '2021'
 for i in sheet ['C1' :f'C{max_row}']:
-    if '20' in i[0].value:
+    if year in i[0].value:
         month = i[0].value.split()
         month_cords[month[0]] = i[0].coordinate[1:]
 
@@ -27,7 +28,7 @@ def sum_cash(up_border:str,down_border:str):
         if cellobj[1].value == 'ОПЛАЧЕНО':
             Jule_sum+=cellobj[0].value
 
-    print(Jule_sum, f' - сумма оплаченых сделок за {up_border}')
+    print('Вопрос 1 ',Jule_sum)
 
 
 #Вопрос 2
@@ -49,6 +50,8 @@ def all_cash(start_cell:str):
                 else:
                     cash.append(cash_at_month)
                 cash_at_month = 0
+
+    print('Вопрос 2 ',cash)
 
     cord_x = months
     cord_y = cash
@@ -73,7 +76,7 @@ def best_stuff(up_border:str,down_border:str):
     max_name = max(names.values())
     final_name = {k:v for k, v in names.items() if v == max_name}
 
-    print(final_name)
+    print("Вопрос 3 ",final_name)
 
 #Вопрос 4
 def most_type(up_border : str,down_border : str or max_row):
@@ -87,7 +90,7 @@ def most_type(up_border : str,down_border : str or max_row):
     max_status = max(status_dict.values())
     final_status = {k:v for k,v in status_dict.items() if v == max_status}
 
-    print(final_status)
+    print("Вопрос 4 ",final_status)
 
 #Вопрос 5
 def OrgiginalsAtMonth(up_border:str,down_border:str,month_search:int):
@@ -100,7 +103,24 @@ def OrgiginalsAtMonth(up_border:str,down_border:str,month_search:int):
         else:
             continue
 
-    print(originals_at_month)
+    print("Вопрос 5 ",originals_at_month)
+
+
+#Задание
+
+def prize_remains(up_border: str,down_border: str,search_month: int ):
+    remains = 0
+    for row in sheet[f"B{month_cords[up_border]}" : f"H{month_cords[down_border]}"]:
+        if row[5].value == 'оригинал' and row[6].value.month>search_month:
+            if row[3].value == "новая" and row[1].value == 'ОПЛАЧЕНО':
+                remains += (row[0].value*7)/100
+            elif row[3].value == 'текущая' and row[1].value != 'ПРОСРОЧЕНО':
+                if row[0].value>10000:
+                    remains+=(row[0].value*5)/100
+                else:
+                    remains+=(row[0].value*3)/100
+    print('Задание ',remains)
+
 
 
 def main():
@@ -113,8 +133,9 @@ def main():
 
     OrgiginalsAtMonth('Июнь','Июль',5)
 
-    all_cash('B3')
+    prize_remains('Май','Июль',6)
 
+    all_cash('B3')
 
 if __name__ == '__main__':
     main()
