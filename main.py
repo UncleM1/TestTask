@@ -18,6 +18,8 @@ for i in sheet ['C1' :f'C{max_row}']:
         month = i[0].value.split()
         month_cords[month[0]] = i[0].coordinate[1:]
 
+
+
 #Вопрос 1
 def sum_cash(up_border:str,down_border:str):
 
@@ -31,6 +33,7 @@ def sum_cash(up_border:str,down_border:str):
     print('Вопрос 1 ',Jule_sum)
 
 
+
 #Вопрос 2
 
 def all_cash(start_cell:str):
@@ -42,14 +45,14 @@ def all_cash(start_cell:str):
     cash = []
     cash_at_month = 0
     for i in sheet[start_cell : last_cell]:
-            if i[0].value  and i[0].coordinate not in month_cords.values() and int(i[0].coordinate[1:]) != max_row :
-                cash_at_month+=i[0].value
+        if i[0].value  and i[0].coordinate not in month_cords.values() and int(i[0].coordinate[1:]) != max_row :
+            cash_at_month+=i[0].value
+        else:
+            if int(i[0].coordinate[1:] )== max_row:
+                cash.append(cash_at_month+i[0].value)
             else:
-                if int(i[0].coordinate[1:] )== max_row:
-                    cash.append(cash_at_month+i[0].value)
-                else:
-                    cash.append(cash_at_month)
-                cash_at_month = 0
+                cash.append(cash_at_month)
+            cash_at_month = 0
 
     print('Вопрос 2 ',cash)
 
@@ -61,9 +64,9 @@ def all_cash(start_cell:str):
     plt.show()
 
 
+
 #Вопрос 3
 def best_stuff(up_border:str,down_border:str):
-
     names = {}
 
     for name in sheet[f'B{month_cords[up_border]}' : f'D{month_cords[down_border]}']:
@@ -81,6 +84,7 @@ def best_stuff(up_border:str,down_border:str):
 #Вопрос 4
 def most_type(up_border : str,down_border : str or max_row):
     status_dict = {}
+    
     for status in sheet[f'E{month_cords[up_border]}' : f'E{down_border}']:
         if status[0].value in status_dict:
             status_dict[status[0].value]+=1
@@ -94,8 +98,8 @@ def most_type(up_border : str,down_border : str or max_row):
 
 #Вопрос 5
 def OrgiginalsAtMonth(up_border:str,down_border:str,month_search:int):
-
     originals_at_month = 0
+    
     for date in sheet[f'H{month_cords[up_border]}' : f'H{month_cords[down_border]}']:
         date_str = date[0].value
         if date_str and date_str.month == month_search :
@@ -110,6 +114,7 @@ def OrgiginalsAtMonth(up_border:str,down_border:str,month_search:int):
 
 def prize_remains(up_border: str,down_border: str,search_month: int ):
     remains = 0
+    
     for row in sheet[f"B{month_cords[up_border]}" : f"H{month_cords[down_border]}"]:
         if row[5].value == 'оригинал' and row[6].value.month>search_month:
             if row[3].value == "новая" and row[1].value == 'ОПЛАЧЕНО':
